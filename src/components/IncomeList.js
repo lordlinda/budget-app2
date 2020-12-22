@@ -3,17 +3,16 @@ import { GlobalContext } from "../context/GlobalState";
 import IncomeTransaction from "./IncomeTransaction";
 
 function IncomeList() {
-  const { incomeTransactions } = useContext(GlobalContext);
-  console.log(incomeTransactions);
+  const { transactions } = useContext(GlobalContext);
 
   return (
-    <div className="transactions transactions-income">
+    <div className="transactions">
       <h2>Transaction History</h2>
       <ul className="transaction-list">
-        {incomeTransactions.map((incomeTransaction) => (
+        {transactions.map((transaction) => (
           <IncomeTransaction
-            key={incomeTransaction.id}
-            incomeTransaction={incomeTransaction}
+            key={transaction.id}
+            incomeTransaction={transaction}
           />
         ))}
       </ul>

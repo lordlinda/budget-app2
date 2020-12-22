@@ -14,7 +14,6 @@ function App() {
           <Header />
           <Balance />
           <IncomeList />
-          <ExpenseList />
           <AddTransaction />
         </div>
       </div>

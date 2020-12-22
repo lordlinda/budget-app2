@@ -3,103 +3,67 @@ import { v4 as uuidv4 } from "uuid";
 import { GlobalContext } from "../context/GlobalState";
 
 function AddTransaction() {
-  const { addIncome, addExpense } = useContext(GlobalContext);
-  const [income, setIncome] = useState({
-    incomeText: "",
-    incomeAmount: 0,
+  const { addIncome } = useContext(GlobalContext);
+  const [data, setData] = useState({
+    text: "",
+    amount: 0,
   });
+  const [type, setType] = useState("");
+  const { text, amount } = data;
 
-  const { incomeText, incomeAmount } = income;
-  const [expense, setExpense] = useState({
-    expenseText: "",
-    expenseAmount: 0,
-  });
-
-  const { expenseText, expenseAmount } = expense;
-
-  const onChangeExpense = (e) => {
-    setExpense({ ...expense, [e.target.name]: e.target.value });
+  const onChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
   };
-  const onChangeIncome = (e) => {
-    setIncome({ ...income, [e.target.name]: e.target.value });
-  };
+
   const onSubmitIncome = (e) => {
     e.preventDefault();
 
-    if (incomeText !== "") {
-      const newIncomeTransaction = {
+    if (text !== "" || text !== 0) {
+      const newTransaction = {
         id: uuidv4(),
-        incomeText,
-        incomeAmount: incomeAmount * 1,
+        text,
+        amount,
+        type,
+        date: new Date(),
       };
 
-      addIncome(newIncomeTransaction);
+      addIncome(newTransaction);
 
-      setIncome({
-        incomeText: "",
-        incomeAmount: 0,
+      setData({
+        text: "",
+        amount: 0,
       });
+      setType("");
     }
   };
-  const onSubmitExpense = (e) => {
-    e.preventDefault();
 
-    if (expenseText !== "") {
-      const newExpenseTransaction = {
-        id: uuidv4(),
-        expenseText,
-        expenseAmount: expenseAmount * 1,
-      };
-
-      addExpense(newExpenseTransaction);
-
-      setExpense({
-        expenseText: "",
-        expenseAmount: 0,
-      });
-    }
-  };
   return (
     <div className="form-wrapper">
       <form onSubmit={onSubmitIncome}>
         <div className="input-group income">
           <input
             type="text"
-            name="incomeText"
-            value={incomeText}
+            name="text"
+            value={text}
             placeholder="Add Income..."
             autoComplete="off"
-            onChange={onChangeIncome}
+            onChange={onChange}
           />
           <input
             type="number"
-            name="incomeAmount"
-            value={incomeAmount}
+            name="amount"
+            value={amount}
             placeholder="Amount"
             autoComplete="off"
-            onChange={onChangeIncome}
+            onChange={onChange}
           />
-          <input type="submit" value="Submit" />
-        </div>
-      </form>
-      <form onSubmit={onSubmitExpense}>
-        <div className="input-group expense">
-          <input
-            type="text"
-            name="expenseText"
-            value={expenseText}
-            placeholder="Add Expense..."
-            autoComplete="off"
-            onChange={onChangeExpense}
-          />
-          <input
-            type="number"
-            name="expenseAmount"
-            value={expenseAmount}
-            placeholder="Amount"
-            autoComplete="off"
-            onChange={onChangeExpense}
-          />
+          <div className="custom-select">
+            <select value={type} onChange={(e) => setType(e.target.value)}>
+              <option>--select type--</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </div>
           <input type="submit" value="Submit" />
         </div>
       </form>
